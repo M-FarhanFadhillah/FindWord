@@ -1,4 +1,4 @@
-#include <iostream>
+#include <iostream>                              
 #include <cstring>
 #include <algorithm>
 
@@ -39,7 +39,7 @@ bool searchHorizontal(char input[]){
     return false;
 }
 
-bool searchReverseHorizontal(char input[]){ 
+bool searchReverseHorizontal(char input[]){     
 	char *check;
 	char kata[15]; 
 	
@@ -59,7 +59,6 @@ bool searchReverseHorizontal(char input[]){
     
     return false; 
 }
-
 bool searchVertical(char input[]){
 	char *check;
 	char kata[15];
@@ -80,3 +79,22 @@ bool searchVertical(char input[]){
     
     return false;
 }
+
+bool searchReverseVertical(char input[]){    
+	char *check;
+	char kata[15];
+	
+	for (int i = 0; i < 15; i++)
+    {
+        for (int j = 0; j < 15; j++)
+        {
+            kata[j] = words[j][i];
+        }
+        
+        reverse(kata, kata + strlen(kata)); 
+        check = strstr(kata, input);
+
+        if(check != NULL){
+	        return true;
+	    }
+    }
