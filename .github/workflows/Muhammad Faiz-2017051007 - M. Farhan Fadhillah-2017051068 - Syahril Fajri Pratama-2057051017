@@ -38,6 +38,7 @@ bool searchHorizontal(char input[]){
     
     return false;
 }
+
 bool searchReverseHorizontal(char input[]){ 
 	char *check;
 	char kata[15]; 
@@ -58,6 +59,7 @@ bool searchReverseHorizontal(char input[]){
     
     return false; 
 }
+
 bool searchVertical(char input[]){
 	char *check;
 	char kata[15];
