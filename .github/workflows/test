@@ -1,11 +1,12 @@
-#include <iostream>  // Tugas bersama kelompok kami
+#include <iostream>
 #include <cstring>
+#include <algorithm>
 
 using namespace std;
 const int cols = 16, rows = 15;
 
- char words[rows][cols] =  {"tgbwwinterwsesn",
-                        	  "aaunttmmhfoodnb",
+ char words[rows][cols] = {"tgbwwinterwsesn",
+                        	"aaunttmmhfoodnb",
                             "jlwcqldzmpmvdmr",
                             "asagmquwvvbsohi",
                             "bwplotanadtpgnc",
@@ -22,17 +23,18 @@ const int cols = 16, rows = 15;
 
 char *getWordVertical(int );
 char *reverse(char *);
-bool searchVertical(char *);
-bool searchHorizontal(char *);
 
-
-int main()
-{
-    char word[16];
-    int n;
-    cout << "Masukkan Banyak kata yang ingin dicari : ";
-    cin>>n;
-    for (int i=0;i<n;i++){
-    
-    return 0 ;
+bool searchHorizontal(char input[]){
+	char *check;
+	
+	for (int i = 0; i < 15; i++)
+    {
+        check = strstr(words[i], input);
+        
+	    if(check != NULL){
+	        return true;
+	    }
     }
+    
+    return false;
+}
