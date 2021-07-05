@@ -1,1 +1,56 @@
+//Anggota Kelompok
 
+//Muhammad Faiz 2017051007
+//Muhammad Farhan Fadhillah 2017051068
+//Syahril Fajri Pratama 2057051017
+
+#include <vector> 
+#include <iostream>
+#include <ctype.h>
+using namespace std;
+
+int main() {
+    string x; getline(cin,x);
+    vector<char> ekspresi;
+    
+    for(long unsigned int i=0; i<x.length(); i++){
+        if(x[i] == ' ')
+            continue;
+        else if(isdigit(x[i])){ 
+            while(i<x.length() && isdigit(x[i])){
+                ekspresi.push_back(x[i]);
+                i++;
+            }
+            i--;
+        }
+        else if(x[i] == '-'){
+            ekspresi.push_back(x[i]);
+            if(i==0){
+                if(isdigit(x[i+1])){
+                    i++;
+                    while(i<x.length() && isdigit(x[i])){
+                        ekspresi.push_back(x[i]);
+                        i++;
+                    }
+                    i--;
+                } else {
+                    ekspresi.push_back('1');
+                    ekspresi.push_back(' ');
+                    ekspresi.push_back('*');
+                }
+            } else {
+                if(!isdigit(x[i-1]) && x[i+1] != ' '){
+                    ekspresi.push_back('1');
+                    ekspresi.push_back(' ');
+                    ekspresi.push_back('*');
+                } 
+            }
+        } else
+            ekspresi.push_back(x[i]);
+        ekspresi.push_back(' ');
+    }
+    cout <<"Print : ";
+    for(auto j:ekspresi)
+        cout << j;
+    return 0;
+}
