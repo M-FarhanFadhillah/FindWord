@@ -161,3 +161,145 @@ int main(){
 	
 	return 0;
 }
+
+#include <iostream> // no 3
+#include <stack>
+#include <ctype.h>
+using namespace std;
+long unsigned int i;
+
+bool isOp(char a){
+	if(a=='+'||a=='-'||a=='*'||a=='/'||a=='%')
+		return true;
+	return false;
+}
+int precedence(char a){
+	if(a=='+'||a=='-') return 1;
+	if(a=='*'||a=='/'||a=='%') return 2;
+	return 0;
+}
+double applyOp(double num1, double num2, char op){
+    switch(op){
+        case '+': return num1 + num2;
+        case '-': return num1 - num2;
+        case '*': return num1 * num2;
+        case '/': return num1 / num2;
+        }
+    return 0;
+}
+void calculate(string masukan){
+	stack<double> data;
+	stack<char>operasi;
+
+	for(i=0; i<masukan.length(); i++){
+		if(isdigit(masukan[i])){
+			int value=0;
+			while(i<masukan.length() && isdigit(masukan[i])){
+				value = (value*10) + (masukan[i] - '0');
+				i++;
+			}
+			i--;
+			data.push(value);
+		}
+		else if(masukan[i] == '(')
+			operasi.push(masukan[i]);
+		else if(masukan[i] == ')'){
+			while(!operasi.empty() && operasi.top() != '('){
+				if(operasi.top() == '%'){
+					int value2 = data.top(); data.pop();
+                    int value1 = data.top(); data.pop();
+                    operasi.pop();
+                    data.push(value1%value2);
+				} else {
+					double value2 = data.top(); data.pop();
+                    double value1 = data.top(); data.pop();
+                    char op = operasi.top(); operasi.pop();
+                    data.push(applyOp(value1, value2, op));
+				}
+			}
+			if(!operasi.empty())
+				operasi.pop();
+		} else {
+			if(masukan[i] == '-'){
+				if(i==0){
+					if(isdigit(masukan[i+1])){
+						i++;
+						int value=0;
+						while(i<masukan.length() && isdigit(masukan[i])){
+							value = (value*10) + (masukan[i] - '0');
+							i++;
+						}
+						i--;
+						data.push(value*-1);
+					} else {
+						data.push(-1);
+						operasi.push('*');
+					}
+				} else {
+					while(!operasi.empty() && precedence(operasi.top()) >= precedence(masukan[i]) && !isOp(masukan[i-1])){
+						if(operasi.top() == '%'){
+							int value2 = data.top(); data.pop();
+		                    int value1 = data.top(); data.pop();
+		                    operasi.pop();
+		                    data.push(value1%value2);
+						} else {
+							double value2 = data.top(); data.pop();
+		                    double value1 = data.top(); data.pop();
+		                    char op = operasi.top(); operasi.pop();
+		                    data.push(applyOp(value1, value2, op));
+						}
+					}
+					if((isdigit(masukan[i+1]) || masukan[i+1]=='(') && (isdigit(masukan[i-1]) || masukan[i-1]==')'))
+						operasi.push(masukan[i]);
+					else{
+						data.push(-1);
+						operasi.push('*');
+					}
+				} 
+			} else {
+				while(!operasi.empty() && precedence(operasi.top()) >= precedence(masukan[i])){
+					if(operasi.top() == '%'){
+						int value2 = data.top(); data.pop();
+		                int value1 = data.top(); data.pop();
+		                operasi.pop();
+		                data.push(value1%value2);
+					} else {
+						double value2 = data.top(); data.pop();
+		                double value1 = data.top(); data.pop();
+		                char op = operasi.top(); operasi.pop();
+		                data.push(applyOp(value1, value2, op));
+					}
+				}
+				operasi.push(masukan[i]);
+			}
+		}
+	}
+	while(!operasi.empty()){
+		if(operasi.top() == '%'){
+			int value2 = data.top(); data.pop();
+		    int value1 = data.top(); data.pop();
+		    operasi.pop();
+		    data.push(value1%value2);
+		} else {
+			double value2 = data.top(); data.pop();
+		    double value1 = data.top(); data.pop();
+		    char op = operasi.top(); operasi.pop();
+		    data.push(applyOp(value1, value2, op));
+		}
+	}
+	cout << data.top() << endl;
+}
+
+int main(){
+	string ekspresi; getline(cin,ekspresi);
+	string new_ekspresi="";
+	for(i=0;i<ekspresi.length();i++){
+		if(ekspresi[i]==' ')
+			continue;
+		else
+			new_ekspresi+=ekspresi[i];
+	}
+	calculate(new_ekspresi);
+
+	return 0;
+}
