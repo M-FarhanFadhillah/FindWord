@@ -1,4 +1,4 @@
-# FindWord
+# FindWord & Expr Aritmatika
 Author :
 1. Muhammad Faiz (2017051007)
 2. M. Farhan Fadhillah (2017051068)
